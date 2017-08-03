@@ -171,7 +171,11 @@ var configureServers = function(conf) {
             app.use(express.static(serverConf.static.srcDir));
         }
 
-        runningExpressServers.push(app.listen(serverConf.port));
+	var expressServer = app.listen(serverConf.port);
+        expressServer.timeout = 5000;
+        console.log('setting express server timeout to: ' + expressServer.timeout + 'ms');
+
+        runningExpressServers.push(expressServer);
         console.log('added express server to log, now running  ' + runningExpressServers.length + ' servers')
 
         if (!conf.isConfFileWatched) {
